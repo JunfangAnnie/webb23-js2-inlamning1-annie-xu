@@ -1,5 +1,5 @@
 {
-  "name": "webb23-js2-inlamning1-annie-xu",
+  "name": "frontend",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -12,11 +12,6 @@
   "license": "ISC",
   "devDependencies": {
     "del-cli": "^5.1.0",
-    "parcel": "^2.9.3",
-    "parcel-bundler": "^1.12.5"
-  },
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.18.2"
+    "parcel": "^2.9.3"
   }
 }
