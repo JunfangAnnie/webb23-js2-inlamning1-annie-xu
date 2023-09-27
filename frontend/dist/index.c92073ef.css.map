@@ -1,1 +1,0 @@
-{"mappings":"AAAA;;;;AAIA","sources":["src/css/style.css"],"sourcesContent":["body {\r\n    text-align:center;\r\n}\r\n\r\n#highscore-list {\r\n    list-style-type: none;\r\n}"],"names":[],"version":3,"file":"index.c92073ef.css.map","sourceRoot":"/__parcel_source_root/"}
