@@ -2,4 +2,8 @@ body {
   text-align: center;
 }
 
+#highscore-list {
+  list-style-type: none;
+}
+
 /*# sourceMappingURL=index.c92073ef.css.map */

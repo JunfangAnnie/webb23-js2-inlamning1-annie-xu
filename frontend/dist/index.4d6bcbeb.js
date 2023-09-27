@@ -579,6 +579,7 @@ let playerName = "";
 let playerChoice = "";
 let computerScore = 0;
 const playerNameInput = document.getElementById("playerNameInput");
+const playerNameDisplay = document.getElementById("playerNameDisplay");
 const startButton = document.getElementById("startButton");
 const rockBtn = document.querySelector(".rock");
 const paperBtn = document.querySelector(".paper");
@@ -588,6 +589,8 @@ const computerHandEl = document.querySelector(".computerHand");
 const playerEl = document.querySelector(".p-count");
 const computerEl = document.querySelector(".c-count");
 const winnerMsg = document.getElementById("winnerMessage");
+const highscoreList = document.getElementById("highscore-list");
+const url = "http://localhost:3000/highscores";
 const playerOptions = [
     rockBtn,
     scissorBtn,
@@ -605,9 +608,10 @@ startButton.addEventListener("click", (event)=>{
     if (name !== "") {
         playerName = name;
         playerNameDisplay.textContent = playerName;
-    }
+        startGame();
+    } else alert("V\xe4nligen, ange ett valfritt namn :)");
 });
-const game = ()=>{
+function startGame() {
     playerOptions.forEach((option)=>{
         option.addEventListener("click", ()=>{
             computerHandEl.innerHTML = "";
@@ -622,14 +626,11 @@ const game = ()=>{
             } else if (computerChoice === "P\xe5se" && playerChoice === "Sax") {
                 playerScore++;
                 winnerMsg.innerText = "Du vinner och f\xe5r ett po\xe4ng";
-            } else if (computerChoice === playerChoice) {
-                winnerMessage.innerText = "Oavgjort, forts\xe4tt spela!";
-                Test();
-            } else {
-                computerScore++;
+            } else if (computerChoice === playerChoice) winnerMsg.innerText = "Oavgjort, forts\xe4tt spela!";
+            else {
+                alert(`Du vann ${playerScore} rundor. Försök igen!`);
                 winnerMsg.innerText = "Datorn vinner och po\xe4ngen \xe5terst\xe4lls";
                 updateHighscore();
-                Test();
                 resetGame();
             }
             playerEl.innerHTML = `Dina poäng: ${playerScore}`;
@@ -637,60 +638,54 @@ const game = ()=>{
             computerHandEl.innerHTML = `Datorns val: ${computerChoice}`;
         });
     });
-};
-game();
-const Test = async ()=>{
-    await fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(playerScoreObj)
-    }).then((response)=>response.json()).then((data)=>{
-        console.log(data);
-    }).catch((error)=>{
-        console.error("Error sending data to backend:", error);
-    });
-};
-let playerScoreObj = {
-    name: playerName,
-    score: playerScore
-};
-const updateHighscore = ()=>{
-    highscores.push(playerScoreObj);
-    highscores.sort((a, b)=>b.score - a.score);
-    if (highscores.length > 5) highscores.pop();
-    displayHighscores();
-};
-const displayHighscores = ()=>{
-    const highscoreList = document.getElementById("highscore-list");
-    highscoreList.innerHTML = "";
-    highscores.forEach((score, index)=>{
-        const listItem = document.createElement("li");
-        listItem.textContent = `${index + 1}. ${score.name} ...... ${score.score}`;
-        highscoreList.appendChild(listItem);
-    });
-};
-const computer = ()=>{
+}
+function computer() {
     let totalOptions = Math.floor(Math.random() * 3);
     let computerChoice = computerOptions[totalOptions];
     return computerChoice;
-};
-const resetGame = ()=>{
+}
+function resetGame() {
     playerScore = 0;
-    computerScore = 0;
-};
-const highscoreList = document.getElementById("highscore-list");
-const url = "http://localhost:3000/highscores";
+}
 async function getHighscores() {
     try {
         const response = await fetch(url);
         if (!response.ok) throw new Error("Network not response");
-        const highscores = await response.json();
-        displayHighscores(highscores);
+        const highscoreData = await response.json();
+        displayHighscores(highscoreData);
     } catch (error) {
         console.error("Error fetching highscores:", error);
     }
+}
+function displayHighscores(highscoreData) {
+    highscoreList.innerHTML = "";
+    highscoreData.forEach((score, index)=>{
+        const listItem = document.createElement("li");
+        listItem.textContent = `${index + 1}. ${score.name} ...... ${score.score}`;
+        highscoreList.appendChild(listItem);
+    });
+}
+async function postPlayer() {
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: playerName,
+                score: playerScore
+            })
+        });
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error("Error sending data to backend:", error);
+    }
+}
+function updateHighscore() {
+    postPlayer();
+    getHighscores();
 }
 
 },{}]},["f3BSW","gLLPy"], "gLLPy", "parcelRequire10c2")

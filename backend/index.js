@@ -32,7 +32,7 @@ function writeHighscores(highscores) {
 
 app.get('/', (req, res) => {
   res.send({
-    message: "Hello User"
+    message: "Hello "
   })
 }) 
 
@@ -47,13 +47,10 @@ app.get('/highscores', (req, res) => {
 
 app.post('/highscores', (req, res) => {
   const { name, score } = req.body;
-  if (!name || !score) {
-    return res.status(400).json({ error: 'Invalid request' });
-  }
 
   const highscores = readHighscores();
   highscores.push({ name, score });
-  
+
   highscores.sort((a, b) => {
     if (a.score === b.score) {
       return a.name.localeCompare(b.name);
@@ -67,6 +64,7 @@ app.post('/highscores', (req, res) => {
 
   res.json({ message: 'Highscore tillagd', highscores });
 });
+
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}...`);
