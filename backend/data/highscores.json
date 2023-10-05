@@ -1,5 +1,9 @@
 [
   {
+    "name": "spongebob",
+    "score": 9
+  },
+  {
     "name": "Piglet",
     "score": 5
   },
@@ -8,15 +12,11 @@
     "score": 4
   },
   {
-    "name": "DORIS",
-    "score": 3
-  },
-  {
     "name": "Nemo",
-    "score": 3
+    "score": 4
   },
   {
-    "name": "Annie",
-    "score": 2
+    "name": "noob",
+    "score": 4
   }
 ]
