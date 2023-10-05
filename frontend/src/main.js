@@ -37,24 +37,37 @@ startButton.addEventListener("click", (event) => {
 
 function startGame() {
   playerOptions.forEach((option) => {
-    option.addEventListener("click", () => {
-      computerHandEl.innerHTML = "";
-      playerChoice = option.textContent;
-      let computerChoice = computer();
+    option.addEventListener("click", playGame);
+  });
 
-      if (computerChoice === "Sten" && playerChoice === "Påse") {
-        playerScore++;
-        winnerMsg.innerText = "Du vinner och får ett poäng";
+  playerScore = 0;
+  computerScore = 0;
+}
+
+  function playGame(event) {
+    computerHandEl.innerHTML = "";
+    playerChoice = event.target.textContent;
+    let computerChoice = computer();
+
+      if(computerChoice === playerChoice) {
+        winnerMsg.innerText = "Oavgjort, fortsätt spela!"; 
       } else if (computerChoice === "Sax" && playerChoice === "Sten") {
         playerScore++;
+        console.log('Du vinner')
         winnerMsg.innerText = "Du vinner och får ett poäng";
       } else if (computerChoice === "Påse" && playerChoice === "Sax") {
         playerScore++;
+        console.log('Du vinner')
         winnerMsg.innerText = "Du vinner och får ett poäng";
-      } else if (computerChoice === playerChoice) {
-        winnerMsg.innerText = "Oavgjort, fortsätt spela!";
+      } else if (computerChoice === "Sten" && playerChoice === "Påse") {
+        playerScore++;
+        console.log('Du vinner')
+        winnerMsg.innerText = "Du vinner och får ett poäng";
       } else {
-        alert(`Du vann ${playerScore} rundor. Försök igen!`);
+        computerScore++;
+        if (playerScore > 0) {
+          alert(`Du fick ${playerScore} poäng. Försök igen!`);
+        }
         winnerMsg.innerText = "Datorn vinner och poängen återställs";
         updateHighscore();
         resetGame();
@@ -63,9 +76,8 @@ function startGame() {
       playerEl.innerHTML = `Dina poäng: ${playerScore}`;
       playerHandEl.innerHTML = `Ditt val: ${playerChoice}`;
       computerHandEl.innerHTML = `Datorns val: ${computerChoice}`;
-    });
-  });
-}
+    }
+      
 
 function computer() {
   let totalOptions = Math.floor(Math.random() * 3);
@@ -75,6 +87,7 @@ function computer() {
 
 function resetGame() {
   playerScore = 0;
+  computerScore = 0;
 }
 
 async function getHighscores() {
@@ -121,4 +134,3 @@ function updateHighscore() {
   postPlayer();
   getHighscores();
 }
-
